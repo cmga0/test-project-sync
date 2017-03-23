@@ -3,7 +3,7 @@ node {
   def organization = projectPath[0]
   def projectName = projectPath[1]
 
-  def rtcUrl='https://10.0.0.112:9443/ccm'
+  def rtcUrl='https://localhost:9443/ccm'
   def rtcUsername='pierodibello'
   def rtcPassword='123123123123'
   def remoteWorkspace="sync-workspace-$organization-$projectName-${env.BUILD_NUMBER}"
