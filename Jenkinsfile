@@ -43,7 +43,7 @@ def scm(command) {
 }
 
 def sync(gitFolder, rtcFolder) {
-  sh "rsync -av --progress $gitFolder/ $rtcFolder --exclude .git --delete"
+  sh "rsync -av --progress $gitFolder/ $rtcFolder/ --exclude .git --delete"
 }
 
 def mailSyncFailed() {
