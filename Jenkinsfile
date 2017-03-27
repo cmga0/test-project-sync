@@ -3,9 +3,7 @@ node {
   def organization = projectPath[0]
   def projectName = projectPath[1]
 
-  def rtcUrl='https://192.168.1.10:9443/ccm'
-  def rtcUsername='pierodibello'
-  def rtcPassword='123123123123'
+  def rtcUrl='https://192.168.1.12:9443/ccm'
   def remoteWorkspace="sync-workspace-$organization-$projectName-${env.BUILD_NUMBER}"
   def localWorkspace='local-sync-workspace'
   def gitCloneDirectory='git-repo'
@@ -18,7 +16,9 @@ node {
        }
      }
      stage('RTC clone') {
-        scm "login -u $rtcUsername -P $rtcPassword -r $rtcUrl"
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'rtc-user', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+          scm "login -u ${env.USERNAME} -P ${env.PASSWORD} -r $rtcUrl"
+        }
         scm "create workspace -r $rtcUrl -s ${env.BRANCH_NAME} $remoteWorkspace"
         scm "load -r $rtcUrl -f -d $localWorkspace --all $remoteWorkspace"
      }
@@ -47,9 +47,9 @@ def sync(gitFolder, rtcFolder) {
 }
 
 def mailSyncFailed() {
-   mail subject: "Sync to RTC failed in Jenkins: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-        to: 'paolo.dincau@xpeppers.com',
-        body: "Sync to RTC ${env.JOB_NAME} failed in Jenkins.\n\nSee ${env.BUILD_URL}"
+  mail subject: "Sync to RTC failed in Jenkins: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+      to: 'pietro.dibello@xpeppers.com',
+      body: "Sync to RTC ${env.JOB_NAME} failed in Jenkins.\n\nSee ${env.BUILD_URL}"
 }
 
 def branchName() {
