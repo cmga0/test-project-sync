@@ -3,7 +3,7 @@ node {
   def organization = projectPath[0]
   def projectName = projectPath[1]
 
-  def rtcUrl='https://192.168.1.12:9443/ccm'
+  def rtcUrl='https://10.0.0.79:9443/ccm'
   def remoteWorkspace="sync-workspace-$organization-$projectName-${env.BUILD_NUMBER}"
   def localWorkspace='local-sync-workspace'
   def gitCloneDirectory='git-repo'
